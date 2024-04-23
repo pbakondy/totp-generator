@@ -1,4 +1,4 @@
-import JsSHA from "jssha"
+const crypto = require('crypto');
 
 /**
  * @param {string} [digits=6]
@@ -8,20 +8,19 @@ import JsSHA from "jssha"
  */
 type Options = {
 	digits?: number
-	algorithm?: "SHA-1" | "SHA-224" | "SHA-256" | "SHA-384" | "SHA-512" | "SHA3-224" | "SHA3-256" | "SHA3-384" | "SHA3-512"
+	algorithm?: "SHA1" | "SHA224" | "SHA256" | "SHA384" | "SHA512" | "SHA3-224" | "SHA3-256" | "SHA3-384" | "SHA3-512"
 	period?: number
 	timestamp?: number
 }
 
 export class TOTP {
 	static generate(key: string, options?: Options) {
-		const _options: Required<Options> = { digits: 6, algorithm: "SHA-1", period: 30, timestamp: Date.now(), ...options }
+		const _options: Required<Options> = { digits: 6, algorithm: "SHA1", period: 30, timestamp: Date.now(), ...options }
 		const epoch = Math.floor(_options.timestamp / 1000.0)
 		const time = this.leftpad(this.dec2hex(Math.floor(epoch / _options.period)), 16, "0")
-		const shaObj = new JsSHA(_options.algorithm, "HEX")
-		shaObj.setHMACKey(this.base32tohex(key), "HEX")
-		shaObj.update(time)
-		const hmac = shaObj.getHMAC("HEX")
+		const shaObj = crypto.createHmac(_options.algorithm, Buffer.from(this.base32tohex(key), 'hex'))
+		shaObj.update(Buffer.from(time, 'hex'))
+		const hmac = shaObj.digest('hex')
 		const offset = this.hex2dec(hmac.substring(hmac.length - 1))
 		let otp = (this.hex2dec(hmac.substr(offset * 2, 8)) & this.hex2dec("7fffffff")) + ""
 		const start = Math.max(otp.length - _options.digits, 0)

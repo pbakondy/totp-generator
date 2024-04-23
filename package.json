@@ -1,6 +1,6 @@
 {
   "name": "totp-generator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Generate TOTP tokens from key",
   "license": "MIT",
   "author": "Magnus Bellstrand",
@@ -45,15 +45,13 @@
     "build:cjs": "tsc --p tsconfig-esm.json",
     "build:esm": "tsc --p tsconfig-cjs.json"
   },
-  "dependencies": {
-    "jssha": "^3.3.1"
-  },
   "devDependencies": {
-    "@types/jest": "^29.5.11",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.7",
     "jest": "^29.7.0",
-    "prettier": "^3.2.4",
+    "prettier": "^3.2.5",
     "ts-jest": "^29.1.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.5"
   },
   "files": [
     "package.json",

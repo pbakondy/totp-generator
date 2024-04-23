@@ -53,7 +53,7 @@ describe("totp generation", () => {
 
 	test("should generate SHA-512-based token with date now = 2016", () => {
 		jest.setSystemTime(1465324707000)
-		expect(TOTP.generate("JBSWY3DPEHPK3PXP", { algorithm: "SHA-512" }).otp).toEqual("093730")
+		expect(TOTP.generate("JBSWY3DPEHPK3PXP", { algorithm: "SHA512" }).otp).toEqual("093730")
 	})
 
 	test("should generate token with timestamp from options", () => {
@@ -66,16 +66,6 @@ describe("totp generation", () => {
 	})
 
 	test("should trigger leftpad fix", () => {
-		jest.setSystemTime(12312354132421332222222222)
-		expect(TOTP.generate("JBSWY3DPEHPK3PXP").otp).toEqual("895896")
-	})
-
-	test("should trigger leftpad fix", () => {
-		jest.mock("jssha", () => ({
-			__esModule: true,
-			default: "mockedDefaultExport",
-			namedExport: jest.fn(),
-		}))
 		jest.setSystemTime(12312354132421332222222222)
 		expect(TOTP.generate("JBSWY3DPEHPK3PXP").otp).toEqual("895896")
 	})

@@ -19,7 +19,7 @@ console.log(otp) // prints a 6-digit time-based token based on provided key and 
 
 ## Default token settings
 
-- SHA-1
+- SHA1
 - 30-second epoch interval
 - 6-digit tokens
 
@@ -33,7 +33,7 @@ import { TOTP } from "totp-generator"
 const { otp } = TOTP.generate("JBSWY3DPEHPK3PXP", { digits: 8 })
 console.log(otp) // prints an 8-digit token
 
-const { otp } = TOTP.generate("JBSWY3DPEHPK3PXP", { algorithm: "SHA-512" })
+const { otp } = TOTP.generate("JBSWY3DPEHPK3PXP", { algorithm: "SHA512" })
 console.log(otp) // prints a token created using a different algorithm
 
 const { otp } = TOTP.generate("JBSWY3DPEHPK3PXP", { period: 60 })
@@ -50,6 +50,11 @@ const { otp } = TOTP.generate("JBSWY3DPEHPK3PXP", {
 })
 console.log(otp) // prints a token using all custom settings combined
 ```
+
+## Algorithms
+
+Node.js Crypto uses OpenSSL for SHA encoding.
+The algorithm is dependent on the available algorithms supported by the version of OpenSSL on the platform. Examples are `'sha256'`, `'sha512'`, etc. On recent releases of OpenSSL, `openssl list -digest-algorithms` will display the available digest algorithms. See [Node.js documentation](https://nodejs.org/api/crypto.html#cryptocreatehmacalgorithm-key-options)
 
 ## What do I use this library for?
 
